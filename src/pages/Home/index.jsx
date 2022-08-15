@@ -6,7 +6,7 @@ import CurrencyFormat from 'react-currency-format';
 const Home = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:3000/api/v2/products')
+    axios.get('https://backend-express-belajar.herokuapp.com/api/v2/products')
       .then(res => res.data.data)
       .then(data => setData(data.products))
   }, []);
@@ -38,7 +38,7 @@ const Home = () => {
                 <Link to={`/edit/${item._id}`} className="btn btn-warning">Edit</Link>
                 <button onClick={() => {
                   if (window.confirm('Yakin ingin menghapus data ini ?')) {
-                    axios.delete(`http://localhost:3000/api/v2/products/${item._id}`)
+                    axios.delete(`https://backend-express-belajar.herokuapp.com/api/v2/products/${item._id}`)
                       .then(res => res.status === 204 ? window.location.reload() : console.log(res))
                   }
                 }} className="btn btn-danger">Delete</button>

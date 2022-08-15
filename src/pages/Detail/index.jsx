@@ -9,7 +9,7 @@ const Detail = () => {
   let { id } = useParams();
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:3000/api/v2/products/${id}`)
+      axios.get(`https://backend-express-belajar.herokuapp.com/api/v2/products/${id}`)
         .then(res => res.data.data)
         .then(data => setDataDetail(data.product));
     }

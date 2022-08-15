@@ -32,7 +32,7 @@ const Edit = () => {
   }
   const handlerSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3000/api/v1/products/${id}`, {
+    axios.put(`https://backend-express-belajar.herokuapp.com/api/v1/products/${id}`, {
       name,
       price,
       stock,

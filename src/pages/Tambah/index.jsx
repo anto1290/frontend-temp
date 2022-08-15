@@ -16,7 +16,7 @@ const Tambah = () => {
   }
   const handlerSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3000/api/v1/products', {
+    axios.post('https://backend-express-belajar.herokuapp.com/api/v1/products', {
       name,
       price,
       stock,
