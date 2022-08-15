@@ -1,12 +1,20 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './index.scss';
-
+import axios from 'axios';
+import CurrencyFormat from 'react-currency-format';
 const Home = () => {
-  return(
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:3000/api/v2/products')
+      .then(res => res.data.data)
+      .then(data => setData(data.products))
+  }, []);
+  return (
     <div className="main">
       <Link to="/tambah" className="btn btn-primary">Tamah Produk</Link>
       <div className="search">
-        <input type="text" placeholder="Masukan kata kunci..."/>
+        <input type="text" placeholder="Masukan kata kunci..." />
       </div>
       <table className="table">
         <thead>
@@ -18,26 +26,25 @@ const Home = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Laptop</td>
-            <td className="text-right">RP. 20.000.000</td>
-            <td className="text-center">
-              <Link to="/detail" className="btn btn-sm btn-info">Detail</Link>
-              <Link to="/edit" className="btn btn-sm btn-warning">Edit</Link>
-              <Link to="#" className="btn btn-sm btn-danger">Delete</Link>
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Monitor</td>
-            <td className="text-right">RP. 10.000.000</td>
-            <td className="text-center">
-              <Link to="/detail" className="btn btn-sm btn-info">Detail</Link>
-              <Link to="/edit" className="btn btn-sm btn-warning">Edit</Link>
-              <Link to="#" className="btn btn-sm btn-danger">Delete</Link>
-            </td>
-          </tr>
+          {data.map((item, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{item.name}</td>
+              <td className="text-left">
+                <CurrencyFormat value={item.price} displayType={'text'} thousandSeparator={true} prefix={'Rp '} />
+              </td>
+              <td className="text-center">
+                <Link to={`/detail/${item._id}`} className="btn btn-sm btn-info">Detail</Link>
+                <Link to={`/edit/${item._id}`} className="btn btn-warning">Edit</Link>
+                <button onClick={() => {
+                  if (window.confirm('Yakin ingin menghapus data ini ?')) {
+                    axios.delete(`http://localhost:3000/api/v2/products/${item._id}`)
+                      .then(res => res.status === 204 ? window.location.reload() : console.log(res))
+                  }
+                }} className="btn btn-danger">Delete</button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
